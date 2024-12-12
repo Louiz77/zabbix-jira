@@ -1,0 +1,19 @@
+-2024-12-12 14:06:29.352097 | Severidade média detectada, nenhuma issue será criada no Jira.
+-2024-12-12 14:06:31.407811 | Erro ao enviar mensagem no WhatsApp: HTTPConnectionPool(host='127.0.0.1', port=7000): Max retries exceeded with url: /send-message (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001EE3CAFD9A0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+-2024-12-12 14:06:31.407811 | Processamento concluído com sucesso
+-2024-12-12 14:07:20.457509 | Issue EE-14739 movida para 'Concluído'.
+-2024-12-12 14:07:21.420512 | Mensagem de resolução enviada no WhatsApp com sucesso.
+-2024-12-12 14:07:21.421524 | Processamento de resolução concluído com sucesso
+-2024-12-12 14:26:55.199752 | Erro ao realizar transição no Jira para a issue EE-14739: 'NoneType' object is not iterable
+-2024-12-12 14:26:55.200764 | Falha ao mover issue no Jira: 'NoneType' object is not iterable
+-2024-12-12 14:27:35.744941 | Erro ao realizar transição no Jira para a issue EE-14739: 'NoneType' object is not iterable
+-2024-12-12 14:27:35.745829 | Falha ao mover issue no Jira: 'NoneType' object is not iterable
+-2024-12-12 14:27:58.999782 | Erro ao realizar transição no Jira para a issue EE-14739: 'NoneType' object is not iterable
+-2024-12-12 14:27:58.999782 | Falha ao mover issue no Jira: 'NoneType' object is not iterable
+-2024-12-12 14:35:37.671865 | Erro ao realizar transição no Jira para a issue EE-14739: Transição 'Marcar como Concluído' não encontrada para a issue EE-14739. Transições disponíveis: ['Reabrir item']
+-2024-12-12 14:35:37.672518 | Falha ao mover issue no Jira: Transição 'Marcar como Concluído' não encontrada para a issue EE-14739. Transições disponíveis: ['Reabrir item']
+-2024-12-12 14:36:50.086734 | Issue EE-14739 movida com sucesso usando a transição 'Marcar como Concluído'
+-2024-12-12 14:36:50.088694 | Issue EE-14739 movida para 'Concluído'.
+-2024-12-12 14:36:51.424580 | Resposta HTTP: Mensagem enviada com sucesso!
+-2024-12-12 14:36:51.428489 | Mensagem de resolução enviada no WhatsApp com sucesso.
+-2024-12-12 14:36:51.428489 | Processamento de resolução concluído com sucesso
