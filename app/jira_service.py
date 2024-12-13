@@ -1,5 +1,5 @@
 from jira import JIRA
-from .register_log import logger
+from datetime import datetime
 from config import Config
 
 class JiraService:
@@ -17,7 +17,8 @@ class JiraService:
             )
             return issue.key
         except Exception as e:
-            logger(f"Erro ao criar issue no Jira: {e}")
+            with open("report.log", "a") as my_file:
+                my_file.write(f"-{datetime.now()} | Erro ao criar issue no Jira: {e}\n")
             return None
 
     def get_transitions(self, issue_key):
@@ -49,8 +50,10 @@ class JiraService:
 
             # Realizar a transição usando o ID
             self.jira.transition_issue(issue_key, transition_id)
-            logger(f"Issue {issue_key} movida com sucesso usando a transição '{transition_name}'")
+            with open("report.log", "a") as my_file:
+                my_file.write(f"-{datetime.now()} | Issue {issue_key} movida com sucesso usando a transição '{transition_name}'\n")
         except Exception as e:
-            logger(f"Erro ao realizar transição no Jira para a issue {issue_key}: {e}")
+            with open("report.log", "a") as my_file:
+                my_file.write(f"-{datetime.now()} | Erro ao realizar transição no Jira para a issue {issue_key}: {e}\n")
             raise
 

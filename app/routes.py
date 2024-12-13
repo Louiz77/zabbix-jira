@@ -3,7 +3,7 @@ from .jira_service import JiraService
 from .zabbix_service import ZabbixService
 import json
 import re
-from .register_log import logger
+from datetime import  datetime
 
 zabbix_bp = Blueprint('zabbix', __name__)
 zabbix_service = ZabbixService()
@@ -24,7 +24,8 @@ def clean_json_string(json_string):
     try:
         return json.loads(json_string)
     except json.JSONDecodeError as e:
-        logger(f"Erro ao decodificar JSON: {e}. Retornando JSON bruto.")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Erro ao decodificar JSON: {e}. Retornando JSON bruto.\n")
         return json_string
 
 @zabbix_bp.route('/zabbix-webhook', methods=['POST'])
@@ -42,7 +43,8 @@ def handle_zabbix_webhook():
                 data = json.loads(data)
 
     except Exception as e:
-        logger(f"Falha ao processar dados: {e}")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Falha ao processar dados: {e}\n")
         return jsonify({'error': 'Falha ao processar dados', 'details': str(e)}), 500
 
     severity = data.get('severity', '').lower()
@@ -67,31 +69,39 @@ def handle_zabbix_webhook():
         issue_key = jira_service.create_issue(project_key, title, description)
 
         if not issue_key:
-            logger('Falha ao criar issue no Jira')
+            with open("report.log", "a") as my_file:
+                my_file.write(f"-{datetime.now()} | Falha ao criar issue no Jira\n")
             return jsonify({'error': 'Falha ao criar issue no Jira'}), 500
 
         zabbix_service.save_card_mapping(data.get('trigger_id'), issue_key)
 
         # issue criada no jira
-        logger(f"Issue criada no Jira: {issue_key}")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Issue criada no Jira: {issue_key}\n")
 
     elif severity == 'average':
         # severidade average detectada
-        logger("Severidade média detectada, nenhuma issue será criada no Jira.")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Severidade média detectada, nenhuma issue será criada no Jira.\n")
 
     else:
         # caso a severidade recebida nao esteja no escopo de problemas
-        logger(f"Severidade '{severity}' não é considerada para ações.")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Severidade '{severity}' não é considerada para ações.\n")
 
     # sendMessage
     session_id = "undefined"
     try:
         whatsapp_service.sendMessage(description, session_id)
-        logger("Mensagem enviada no WhatsApp com sucesso.")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Mensagem enviada no WhatsApp com sucesso.\n")
     except Exception as e:
-        logger(f"Erro ao enviar mensagem no WhatsApp: {e}")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Erro ao enviar mensagem no WhatsApp: {e}\n")
 
-    logger('Processamento concluído com sucesso')
+    with open("report.log", "a") as my_file:
+        my_file.write(f"-{datetime.now()} | Processamento concluído com sucesso\n")
+
     return jsonify({'message': 'Processamento concluído com sucesso'}), 200
 
 @zabbix_bp.route('/zabbix-resolved', methods=['POST'])
@@ -109,7 +119,8 @@ def handle_zabbix_resolved():
                 data = json.loads(data)
 
     except Exception as e:
-        logger(f'Falha ao processar dados: {e}')
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Falha ao processar dados: {e}\n")
         return jsonify({'error': 'Falha ao processar dados', 'details': str(e)}), 500
 
     trigger_id = data.get('trigger_id')
@@ -129,22 +140,30 @@ def handle_zabbix_resolved():
     if issue_key:
         try:
             jira_service.transition_issue(issue_key, "Marcar como Concluído")
-            logger(f"Issue {issue_key} movida para 'Concluído'.")
+            with open("report.log", "a") as my_file:
+                my_file.write(f"-{datetime.now()} | Issue {issue_key} movida para 'Concluído'.\n")
         except Exception as e:
-            logger(f'Falha ao mover issue no Jira: {e}')
+            with open("report.log", "a") as my_file:
+                my_file.write(f"-{datetime.now()} | Falha ao mover issue no Jira: {e}\n")
             return jsonify({'error': 'Falha ao mover issue no Jira', 'details': str(e)}), 500
     else:
-        logger(f"Trigger ID {trigger_id} não possui issue correspondente no Jira. Nenhuma transição realizada.")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Trigger ID {trigger_id} não possui issue correspondente no Jira. Nenhuma transição realizada.\n")
 
     # sendMessage
     session_id = "undefined"
     try:
         whatsapp_service.sendMessageResolved(message, session_id)
-        logger("Mensagem de resolução enviada no WhatsApp com sucesso.")
-    except Exception as e:
-        logger(f"Erro ao enviar mensagem no WhatsApp: {e}")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Mensagem de resolução enviada no WhatsApp com sucesso.\n")
 
-    logger("Processamento de resolução concluído com sucesso")
+    except Exception as e:
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Erro ao enviar mensagem no WhatsApp: {e}\n")
+
+    with open("report.log", "a") as my_file:
+        my_file.write(f"-{datetime.now()} | Processamento de resolução concluído com sucesso\n")
+
     return jsonify({'message': 'Processamento de resolução concluído com sucesso'}), 200
 
 

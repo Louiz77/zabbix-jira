@@ -1,7 +1,7 @@
 from flask import jsonify
 import requests
 import json
-from .register_log import logger
+from datetime import datetime
 
 class WhatsappService:
     def __init__(self, api_url):
@@ -33,12 +33,15 @@ class WhatsappService:
         response = requests.request("POST", self.api_url, headers=self.headers, data=payload)
 
         # Logs detalhados da resposta
-        logger(f"Resposta HTTP: {response.text}")
+        with open("report.log", "a") as my_file:
+            my_file.write(f"-{datetime.now()} | Resposta HTTP: {response.text}\n")
         print(f"Status Code: {response.status_code}")
 
         # Validar o status HTTP
         if response.status_code != 200:
-            logger(f"Erro na API do WhatsApp: {response.status_code} - {response.text}")
+            with open("report.log", "a") as my_file:
+                my_file.write(f"-{datetime.now()} | Erro na API do WhatsApp: {response.status_code} - {response.text}\n")
+
             return jsonify({'error': 'Erro na API do WhatsApp'}), response.status_code
 
         try:
