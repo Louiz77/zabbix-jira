@@ -64,7 +64,7 @@ def handle_zabbix_webhook():
     )
 
     # logica para detectar severidade
-    if severity in ['high', 'disaster']:
+    if severity in ['High', 'Disaster']:
         project_key = "EE"  # projeto do jira
         issue_key = jira_service.create_issue(project_key, title, description)
 
