@@ -4,8 +4,8 @@ from config import Config
 
 class JiraService:
     def __init__(self):
-        # Configure suas credenciais do Jira e a URL do servidor
-        self.jira = JIRA(server="https://itfacil.atlassian.net", basic_auth=(Config.JIRA_API_EMAIL, Config.JIRA_API_TOKEN))
+        # credenciais do Jira e a URL do servidor
+        self.jira = JIRA(server="https://itfacilservicos.atlassian.net", basic_auth=(Config.JIRA_API_EMAIL, Config.JIRA_API_TOKEN))
 
     def create_issue(self, project_key, summary, description, issue_type="Task"):
         try:
