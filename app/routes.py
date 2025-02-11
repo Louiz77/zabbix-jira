@@ -26,7 +26,7 @@ def clean_json_string(json_string):
     try:
         return json.loads(json_string)
     except json.JSONDecodeError as e:
-        with open(r"C:\Users\Luiz\PycharmProjects\zabbix-jira\report.log", "a") as my_file:
+        with open("report.log", "a") as my_file:
             my_file.write(f"-{datetime.now()} | Erro ao decodificar JSON: {e}. Retornando JSON bruto.\n")
         return json_string
 
@@ -45,7 +45,7 @@ def handle_zabbix_webhook():
                 data = json.loads(data)
 
     except Exception as e:
-        with open(r"C:\Users\Luiz\PycharmProjects\zabbix-jira\report.log", "a") as my_file:
+        with open("report.log", "a") as my_file:
             my_file.write(f"-{datetime.now()} | Falha ao processar dados: {e}\n")
         email_service.send_alert_email("teste", e)
         with open("report.log", "a") as my_file:
