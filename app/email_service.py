@@ -43,18 +43,18 @@ class EmailService:
             server.quit()
 
         except smtplib.SMTPConnectError as e:
-            print(f"🚨 Erro de Conexão SMTP: {e}")
+            print(f"Erro de Conexão SMTP: {e}")
             with open("report.log", "a") as my_file:
-                my_file.write(f"-{datetime.now()} | 🚨 Erro de Conexão SMTP: {e}")
+                my_file.write(f"-{datetime.now()} | Erro de Conexão SMTP: {e}")
         except smtplib.SMTPAuthenticationError as e:
-            print(f"🚨 Erro de Autenticação SMTP: {e}")
+            print(f"Erro de Autenticação SMTP: {e}")
             with open("report.log", "a") as my_file:
-                my_file.write(f"-{datetime.now()} | 🚨 Erro de Autenticação SMTP: {e}")
+                my_file.write(f"-{datetime.now()} | Erro de Autenticação SMTP: {e}")
         except smtplib.SMTPException as e:
-            print(f"🚨 Erro SMTP Geral: {e}")
+            print(f"Erro SMTP Geral: {e}")
             with open("report.log", "a") as my_file:
-                my_file.write(f"-{datetime.now()} | 🚨 Erro SMTP Geral: {e}")
+                my_file.write(f"-{datetime.now()} | Erro SMTP Geral: {e}")
         except Exception as e:
-            print(f"🚨 Erro inesperado: {e}")
+            print(f"Erro inesperado: {e}")
             with open("report.log", "a") as my_file:
-                my_file.write(f"-{datetime.now()} | 🚨 Erro inesperado: {e}")
+                my_file.write(f"-{datetime.now()} | Erro inesperado: {e}")
